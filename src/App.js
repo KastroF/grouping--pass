@@ -1,12 +1,17 @@
 
 import './App.css';
 import { useEffect, useState } from 'react';
+import Lottie from "lottie-react";
+import looading from "./assets/lottie/loading.json"; 
+
 
 function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -28,6 +33,8 @@ function App() {
 
     try {
       // Exemple d'envoi vers ton serveur (à adapter à ton backend)
+
+      setLoading(true);
       const res = await fetch("https://grouping.glitch.me/api/user/updateemail", {
         method: "POST",
         headers: {
@@ -40,17 +47,47 @@ function App() {
       });
 
       const data = await res.json();
+      
       if (res.ok) {
-        setMessage("✅ Mot de passe mis à jour avec succès !");
+
         setPassword('');
         setConfirmPassword('');
+        setLoading(false);
+
+        if(data.status === 0){
+
+          setMessage("✅ Mot de passe mis à jour avec succès !");
+        
+
+        }else{
+
+          setMessage("❌ Une erreur s'est produite !");
+        }
+       
+      
       } else {
         setMessage("❌ Erreur : " + data.message);
+        setLoading(false);
       }
-    } catch (err) {
-      setMessage("❌ Une erreur est survenue.");
-    }
+        } catch (err) {
+          setMessage("❌ Une erreur est survenue.");
+          setLoading(false);
+        }
   };
+
+
+  if(loading) return (
+    <div style={{flex: 1, display: "flex", justifyContent: "center", alignItems: "center", 
+    flexDirection: "column", }}>
+       
+       <Lottie animationData={looading} />
+       <div style={{color: "#000", fontSize: 20}} >
+            Veuillez patienter
+         
+       </div>
+        
+    </div>
+ );
 
   return (
     <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>
