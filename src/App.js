@@ -35,7 +35,7 @@ function App() {
       // Exemple d'envoi vers ton serveur (à adapter à ton backend)
 
       setLoading(true);
-      const res = await fetch("https://grouping.glitch.me/api/user/updateemail", {
+      const res = await fetch("https://grouping-node1-1.onrender.com/api/user/updateemail", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
